@@ -161,6 +161,15 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="Pointer.h" />
+    <ClInclude Include="Pointers.h" />
+    <ClInclude Include="HackManager.h" />
+    <ClInclude Include="theme.h" />
+    <ClInclude Include="widgets.h" />
+    <ClInclude Include="menu.h" />
+    <ClInclude Include="modern_style.h" />
+    <ClInclude Include="overlay.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_internal.h" />
@@ -174,6 +183,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="config.cpp" />
+    <ClCompile Include="Pointer.cpp" />
+    <ClCompile Include="HackManager.cpp" />
+    <ClCompile Include="theme.cpp" />
+    <ClCompile Include="widgets.cpp" />
+    <ClCompile Include="menu.cpp" />
+    <ClCompile Include="overlay.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
