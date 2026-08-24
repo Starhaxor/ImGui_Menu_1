@@ -5,6 +5,7 @@
 #include "widgets.h"
 #include "overlay.h"
 #include "modern_style.h"
+#include "HackManager.h"
 
 #include <string>
 
@@ -182,7 +183,7 @@ namespace
         ClassicCheckbox("Infinite Ammo", &g_config.infiniteAmmo);
         ClassicCheckbox("Rapid Fire", &g_config.rapidFire);
         ClassicCheckbox("Perfect Ms", &g_config.perfectMs);
-        ClassicCheckbox("Instant Respawn", &g_config.instantRespawn);
+        ClassicCheckbox("Early Respawn", &g_config.earlyRespawn);
         ClassicCheckbox("Team Kill", &g_config.teamKill);
         ImGui::Spacing();
         ImGui::TextUnformatted("HP Hack:");
@@ -218,11 +219,11 @@ namespace
         SwitchColumns();
 
         DrawSectionHeader("WAYPOINTS");
-        if (ClassicButton("Base", ImVec2(110.0f, 22.0f))) g_config.teleportLocation = 0;
-        if (ClassicButton("Mid", ImVec2(110.0f, 22.0f))) g_config.teleportLocation = 1;
-        if (ClassicButton("A Site", ImVec2(110.0f, 22.0f))) g_config.teleportLocation = 2;
-        if (ClassicButton("B Site", ImVec2(110.0f, 22.0f))) g_config.teleportLocation = 3;
-        if (ClassicButton("Enemy Spawn", ImVec2(110.0f, 22.0f))) g_config.teleportLocation = 4;
+        if (ClassicButton("Base", ImVec2(110.0f, 22.0f))) { g_config.teleportLocation = 0; CHackManager::Get().RequestTeleport(); }
+        if (ClassicButton("Mid", ImVec2(110.0f, 22.0f))) { g_config.teleportLocation = 1; CHackManager::Get().RequestTeleport(); }
+        if (ClassicButton("A Site", ImVec2(110.0f, 22.0f))) { g_config.teleportLocation = 2; CHackManager::Get().RequestTeleport(); }
+        if (ClassicButton("B Site", ImVec2(110.0f, 22.0f))) { g_config.teleportLocation = 3; CHackManager::Get().RequestTeleport(); }
+        if (ClassicButton("Enemy Spawn", ImVec2(110.0f, 22.0f))) { g_config.teleportLocation = 4; CHackManager::Get().RequestTeleport(); }
         EndColumns();
     }
 
@@ -322,7 +323,10 @@ namespace
 
         DrawSectionHeader("ACTIONS");
         if (ClassicButton("Kick Selected", ImVec2(110.0f, 22.0f)))
+        {
+            CHackManager::Get().RequestKick(g_config.kickPlayer);
             ImGui::OpenPopup("##kick_toast");
+        }
         if (ImGui::BeginPopup("##kick_toast"))
         {
             ImGui::Text("Vote kick sent.");
@@ -385,6 +389,8 @@ void LoadFonts()
 
 void RenderUI()
 {
+    CHackManager::Get().DrawOverlay();
+
     if (g_config.watermark)
         DrawWatermark();
     if (g_showMenu)

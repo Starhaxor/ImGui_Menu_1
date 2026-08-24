@@ -215,10 +215,16 @@ namespace
             if (g_showMenu)
                 ClipCursor(nullptr);
 
+            const ImGuiIO& ioFrame = ImGui::GetIO();
+            CHackManager::Get().SetScreenSize(ioFrame.DisplaySize.x, ioFrame.DisplaySize.y);
             CHackManager::Get().SyncFromConfig(g_config);
-            CHackManager::Get().Update();
+            CHackManager::Get().Update(g_showMenu == 0);
 
-            if (g_showMenu || g_config.watermark)
+            const bool wantUi = g_showMenu || g_config.watermark || g_config.crosshair ||
+                g_config.aimbot || g_config.boxEsp || g_config.skeletonEsp ||
+                g_config.healthBar || g_config.distanceText || g_config.nameTags;
+
+            if (wantUi)
             {
                 ImGui_ImplDX11_NewFrame();
                 ImGui_ImplWin32_NewFrame();

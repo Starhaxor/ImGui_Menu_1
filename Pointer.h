@@ -46,6 +46,13 @@ public:
         const std::vector<uintptr_t>& offsets,
         const void* value, DWORD type);
 
+    // Ismi bilinen pointerin cozumlenen efektif adresi (0 = basarisiz)
+    uintptr_t GetAddress(const std::string& name);
+
+    // Ham bellek okuma/yazma
+    bool ReadRaw(uintptr_t address, void* out, size_t size);
+    bool WriteRaw(uintptr_t address, const void* value, size_t size);
+
 private:
     std::map<std::string, PointerInfo> m_pointers;
 
