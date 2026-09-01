@@ -257,8 +257,16 @@ namespace
 
     DWORD WINAPI MainThread(LPVOID)
     {
-        if (kiero::init(kiero::RenderType::D3D11) == kiero::Status::Success)
-            kiero::bind(8, (void**)&g_origPresent, (void*)PresentHook);
+        // Auto-detect render API (D3D11/D3D9/OpenGL) - onceki hardcode D3D11 yerine
+        auto kStatus = kiero::init(kiero::RenderType::Auto);
+        if (kStatus == kiero::Status::Success) {
+            auto type = kiero::getRenderType();
+            if (type == kiero::RenderType::D3D11)
+                kiero::bind(8, (void**)&g_origPresent, (void*)PresentHook);
+            else if (type == kiero::RenderType::D3D9)
+                kiero::bind(13, (void**)&g_origPresent, (void*)PresentHook); // D3D9 Present idx 17? kiero D3D9 119 methods, Present at 17
+            // OpenGL/Vulkan icin ayri hook gerekir - su an sadece D3D11/9 destekli, Auto ile en azindan D3D oyunlarda otomatik calisir
+        }
 
         while (!g_wantUnload)
             Sleep(80);
